@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.aldev.adaberita.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_category"
+        android:name="com.aldev.adaberita.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category" />
+    <fragment
+        android:id="@+id/navigation_bookmarks"
+        android:name="com.aldev.adaberita.BookmarksFragment"
+        android:label="Bookmarks"
+        tools:layout="@layout/fragment_bookmarks" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.aldev.adaberita.WebViewFragment"
+        android:label="Detail"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="newsUrl"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+</navigation>
