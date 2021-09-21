@@ -1,4 +1,4 @@
-package com.aldev.adaberita
+package com.aldev.adaberita.data.source.remote.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

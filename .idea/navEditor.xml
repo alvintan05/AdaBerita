@@ -59,8 +59,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-5992" />
-                            <option name="y" value="-1672" />
+                            <option name="x" value="-6125" />
+                            <option name="y" value="-1677" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -84,27 +84,6 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="-6372" />
-                            <option name="y" value="-1675" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_navigation_home_to_webViewFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="webViewFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-6174" />
                             <option name="y" value="-1675" />
                           </Point>
                         </option>

@@ -1,4 +1,4 @@
-package com.aldev.adaberita
+package com.aldev.adaberita.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

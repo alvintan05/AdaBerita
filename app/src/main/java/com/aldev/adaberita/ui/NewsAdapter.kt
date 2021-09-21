@@ -1,20 +1,24 @@
-package com.aldev.adaberita
+package com.aldev.adaberita.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.aldev.adaberita.databinding.ItemListNewsBinding
-import com.aldev.adaberita.model.ArticlesItem
+import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.bumptech.glide.Glide
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    private var newsList = mutableListOf<ArticlesItem>()
+    private var newsList = listOf<ArticlesItem>()
+    private lateinit var listener: OnItemClickListener
 
-    fun setList(list: MutableList<ArticlesItem>) {
+    fun setList(list: List<ArticlesItem>) {
         newsList = list
         notifyDataSetChanged()
+    }
+
+    fun setOnClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -41,9 +45,12 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
             binding.tvNewsSource.text = item.source?.name
 
             binding.root.setOnClickListener { view ->
-                val value = HomeFragmentDirections.actionNavigationHomeToWebViewFragment(item.url)
-                view.findNavController().navigate(value)
+                item.url?.let { listener.onClick(it) }
             }
         }
+    }
+
+    interface OnItemClickListener{
+        fun onClick(newsUrl: String)
     }
 }

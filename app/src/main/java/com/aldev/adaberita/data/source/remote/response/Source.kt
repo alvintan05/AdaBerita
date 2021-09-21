@@ -1,4 +1,4 @@
-package com.aldev.adaberita.model
+package com.aldev.adaberita.data.source.remote.response
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

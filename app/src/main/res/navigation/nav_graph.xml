@@ -7,31 +7,17 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.aldev.adaberita.HomeFragment"
+        android:name="com.aldev.adaberita.ui.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_navigation_home_to_webViewFragment"
-            app:destination="@id/webViewFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_category"
-        android:name="com.aldev.adaberita.CategoryFragment"
+        android:name="com.aldev.adaberita.ui.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category" />
     <fragment
         android:id="@+id/navigation_bookmarks"
-        android:name="com.aldev.adaberita.BookmarksFragment"
+        android:name="com.aldev.adaberita.ui.BookmarksFragment"
         android:label="Bookmarks"
         tools:layout="@layout/fragment_bookmarks" />
-    <fragment
-        android:id="@+id/webViewFragment"
-        android:name="com.aldev.adaberita.WebViewFragment"
-        android:label="Detail"
-        tools:layout="@layout/fragment_web_view" >
-        <argument
-            android:name="newsUrl"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
 </navigation>

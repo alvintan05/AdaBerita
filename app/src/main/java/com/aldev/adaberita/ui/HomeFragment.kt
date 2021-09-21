@@ -1,12 +1,19 @@
-package com.aldev.adaberita
+package com.aldev.adaberita.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.aldev.adaberita.data.source.remote.network.RetrofitServer
+import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentHomeBinding
+import com.aldev.adaberita.utils.Status
+import com.aldev.adaberita.utils.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +27,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: NewsAdapter
     private val service = RetrofitServer.getService()
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +44,35 @@ class HomeFragment : Fragment() {
         binding.rvHome.adapter = adapter
         binding.rvHome.setHasFixedSize(true)
 
-        getNewsData()
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
+        //getNewsData()
+
+        viewModel.data.observe(viewLifecycleOwner, Observer { resource ->
+            toggleLoading(resource.status)
+            resource.data?.let { showData(it) }
+        })
+
+        adapter.setOnClickListener(object : NewsAdapter.OnItemClickListener {
+            override fun onClick(newsUrl: String) {
+                val intent = Intent(activity, WebViewActivity::class.java)
+                intent.putExtra("url", newsUrl)
+                activity?.startActivity(intent)
+            }
+        })
+    }
+
+    private fun showData(data: List<ArticlesItem>) {
+        adapter.setList(data)
+        binding.rvHome.visibility = View.VISIBLE
+    }
+
+    private fun toggleLoading(status: Status) {
+        when (status) {
+            Status.LOADING -> binding.progressCircular.visibility = View.VISIBLE
+            else -> binding.progressCircular.visibility = View.GONE
+        }
     }
 
     private fun getNewsData() {

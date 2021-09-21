@@ -1,6 +1,6 @@
-package com.aldev.adaberita
+package com.aldev.adaberita.data.source.remote.network
 
-import com.aldev.adaberita.model.NewsResponse
+import com.aldev.adaberita.data.source.remote.response.NewsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
