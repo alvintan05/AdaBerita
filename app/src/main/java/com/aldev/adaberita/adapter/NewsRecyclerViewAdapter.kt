@@ -1,4 +1,4 @@
-package com.aldev.adaberita.ui
+package com.aldev.adaberita.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.aldev.adaberita.databinding.ItemListNewsBinding
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.bumptech.glide.Glide
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.NewsViewHolder>() {
 
     private var newsList = listOf<ArticlesItem>()
     private lateinit var listener: OnItemClickListener

@@ -22,8 +22,12 @@ class RemoteDataSource {
         throw Exception("Terjadi kesalahan saat melakukan request data, status error ${response.code()}")
     }
 
-    interface NewsCallBack {
-        fun onHeadlineNewsReceived(newsResponse: List<ArticlesItem>)
+    suspend fun getHeadlineNewsFromCategory(categoryId: String): List<ArticlesItem>? {
+        val response =
+            RetrofitServer.getService().getHeadlinesNewsFromCategory(category = categoryId)
+        if (response.isSuccessful) return response.body()?.articles
+
+        throw Exception("Terjadi kesalahan saat melakukan request data, status error ${response.code()}")
     }
 
 }

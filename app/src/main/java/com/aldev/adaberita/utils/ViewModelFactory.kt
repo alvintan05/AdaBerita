@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.aldev.adaberita.data.NewsRepository
 import com.aldev.adaberita.di.Injection
-import com.aldev.adaberita.ui.HomeViewModel
+import com.aldev.adaberita.ui.category.CategoryViewModel
+import com.aldev.adaberita.ui.home.HomeViewModel
 
 class ViewModelFactory private constructor(private val newsRepository: NewsRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -24,6 +25,9 @@ class ViewModelFactory private constructor(private val newsRepository: NewsRepos
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(newsRepository) as T
+            }
+            modelClass.isAssignableFrom(CategoryViewModel::class.java) -> {
+                CategoryViewModel(newsRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

@@ -13,4 +13,11 @@ interface Endpoint {
         @Query("apiKey") apiKey: String = RetrofitServer.API_KEY
     ): Response<NewsResponse>
 
+    @GET("top-headlines")
+    suspend fun getHeadlinesNewsFromCategory(
+        @Query("country") countryId: String = "id",
+        @Query("apiKey") apiKey: String = RetrofitServer.API_KEY,
+        @Query("category") category: String
+    ): Response<NewsResponse>
+
 }

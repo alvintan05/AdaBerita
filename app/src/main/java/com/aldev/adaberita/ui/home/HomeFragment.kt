@@ -1,4 +1,4 @@
-package com.aldev.adaberita.ui
+package com.aldev.adaberita.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.aldev.adaberita.data.source.remote.network.RetrofitServer
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentHomeBinding
+import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
+import com.aldev.adaberita.ui.WebViewActivity
 import com.aldev.adaberita.utils.Status
 import com.aldev.adaberita.utils.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +27,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: NewsAdapter
+    private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
     private val service = RetrofitServer.getService()
     private lateinit var viewModel: HomeViewModel
 
@@ -40,8 +42,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = NewsAdapter()
-        binding.rvHome.adapter = adapter
+        recyclerViewAdapter = NewsRecyclerViewAdapter()
+        binding.rvHome.adapter = recyclerViewAdapter
         binding.rvHome.setHasFixedSize(true)
 
         val factory = ViewModelFactory.getInstance()
@@ -49,29 +51,35 @@ class HomeFragment : Fragment() {
 
         //getNewsData()
 
-        viewModel.data.observe(viewLifecycleOwner, Observer { resource ->
+        viewModel.data.observe(viewLifecycleOwner, { resource ->
             toggleLoading(resource.status)
             resource.data?.let { showData(it) }
         })
 
-        adapter.setOnClickListener(object : NewsAdapter.OnItemClickListener {
+        recyclerViewAdapter.setOnClickListener(object : NewsRecyclerViewAdapter.OnItemClickListener {
             override fun onClick(newsUrl: String) {
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra("url", newsUrl)
                 activity?.startActivity(intent)
             }
         })
+
+        binding.swipeRefresh.setOnRefreshListener { viewModel.getData() }
     }
 
     private fun showData(data: List<ArticlesItem>) {
-        adapter.setList(data)
+        recyclerViewAdapter.setList(data)
         binding.rvHome.visibility = View.VISIBLE
     }
 
     private fun toggleLoading(status: Status) {
+//        when (status) {
+//            Status.LOADING -> binding.progressCircular.visibility = View.VISIBLE
+//            else -> binding.progressCircular.visibility = View.GONE
+//        }
         when (status) {
-            Status.LOADING -> binding.progressCircular.visibility = View.VISIBLE
-            else -> binding.progressCircular.visibility = View.GONE
+            Status.LOADING -> binding.swipeRefresh.isRefreshing = true
+            else -> binding.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -84,7 +92,7 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful) {
                         val data = response.body()
                         if (data?.status == "ok") {
-                            adapter.setList(data.articles)
+                            recyclerViewAdapter.setList(data.articles)
                         }
                     }
                 } catch (e: HttpException) {

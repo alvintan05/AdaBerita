@@ -20,5 +20,8 @@ class NewsRepository private constructor(private val remoteData: RemoteDataSourc
         return remoteData.getHeadlineNews()
     }
 
+    override suspend fun getHeadlineNewsFromCategory(categoryId: String): List<ArticlesItem>? {
+        return remoteData.getHeadlineNewsFromCategory(categoryId)
+    }
 
 }

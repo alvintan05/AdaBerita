@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.aldev.adaberita.ui.HomeFragment"
+        android:name="com.aldev.adaberita.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_category"
-        android:name="com.aldev.adaberita.ui.CategoryFragment"
+        android:name="com.aldev.adaberita.ui.category.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category" />
     <fragment

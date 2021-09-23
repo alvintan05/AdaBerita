@@ -1,4 +1,4 @@
-package com.aldev.adaberita.ui
+package com.aldev.adaberita.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,8 +23,13 @@ class HomeViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     }
 
     fun getData() = viewModelScope.launch {
+        showLoading()
         val result = newsRepository.getHeadlineNews()
         mData.value = mData.value?.copy(Status.SUCCESS, result, null)
+    }
+
+    private fun showLoading(){
+        mData.value = mData.value?.copy(Status.LOADING, null, null)
     }
 
 }
