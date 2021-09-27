@@ -49,15 +49,24 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
         viewModel = ViewModelProvider(this, factory)[CategoryViewModel::class.java]
 
         viewModel.data.observe(viewLifecycleOwner, { resource ->
-            toggleLoading(resource.status)
-            resource.data?.let { showData(it) }
+            when (resource.status) {
+                Status.LOADING -> binding.swipeRefresh.isRefreshing = true
+                Status.SUCCESS -> {
+                    binding.swipeRefresh.isRefreshing = false
+                    resource.data?.let { showData(it) }
+                }
+                Status.ERROR -> {
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
         })
 
         recyclerViewAdapter.setOnClickListener(object :
             NewsRecyclerViewAdapter.OnItemClickListener {
-            override fun onClick(newsUrl: String) {
+            override fun onClick(item: ArticlesItem) {
                 val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra("url", newsUrl)
+                intent.putExtra("url", item.url)
+                intent.putExtra("newsTitle", item.title)
                 activity?.startActivity(intent)
             }
         })
@@ -93,12 +102,5 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private fun showData(data: List<ArticlesItem>) {
         recyclerViewAdapter.setList(data)
         binding.rvCategory.visibility = View.VISIBLE
-    }
-
-    private fun toggleLoading(status: Status) {
-        when (status) {
-            Status.LOADING -> binding.swipeRefresh.isRefreshing = true
-            else -> binding.swipeRefresh.isRefreshing = false
-        }
     }
 }

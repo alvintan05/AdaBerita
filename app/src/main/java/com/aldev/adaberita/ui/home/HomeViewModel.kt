@@ -25,10 +25,10 @@ class HomeViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     fun getData() = viewModelScope.launch {
         showLoading()
         val result = newsRepository.getHeadlineNews()
-        mData.value = mData.value?.copy(Status.SUCCESS, result, null)
+        mData.value = mData.value?.copy(result.status, result.data, result.message)
     }
 
-    private fun showLoading(){
+    private fun showLoading() {
         mData.value = mData.value?.copy(Status.LOADING, null, null)
     }
 

@@ -2,6 +2,7 @@ package com.aldev.adaberita.data
 
 import com.aldev.adaberita.data.source.remote.RemoteDataSource
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
+import com.aldev.adaberita.utils.Resource
 
 class NewsRepository private constructor(private val remoteData: RemoteDataSource) :
     NewsDataSource {
@@ -16,11 +17,11 @@ class NewsRepository private constructor(private val remoteData: RemoteDataSourc
             }
     }
 
-    override suspend fun getHeadlineNews(): List<ArticlesItem>? {
+    override suspend fun getHeadlineNews(): Resource<List<ArticlesItem>?> {
         return remoteData.getHeadlineNews()
     }
 
-    override suspend fun getHeadlineNewsFromCategory(categoryId: String): List<ArticlesItem>? {
+    override suspend fun getHeadlineNewsFromCategory(categoryId: String): Resource<List<ArticlesItem>?> {
         return remoteData.getHeadlineNewsFromCategory(categoryId)
     }
 

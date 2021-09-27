@@ -14,13 +14,13 @@ class CategoryViewModel(private val newsRepository: NewsRepository): ViewModel()
     val data: LiveData<Resource<List<ArticlesItem>>> get() = mData
 
     private val mData = MutableLiveData<Resource<List<ArticlesItem>>>().apply {
-        value = Resource(Status.LOADING, null, null)
+        value = Resource(null, null, null)
     }
 
     fun getData(categoryId: String) = viewModelScope.launch {
         showLoading()
         val result = newsRepository.getHeadlineNewsFromCategory(categoryId)
-        mData.value = mData.value?.copy(Status.SUCCESS, result, null)
+        mData.value = mData.value?.copy(result.status, result.data, result.message)
     }
 
     private fun showLoading(){

@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AdaBerita">
-        <activity android:name=".ui.WebViewActivity"></activity>
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:theme="@style/Theme.AdaBerita.NoToolbar"></activity>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

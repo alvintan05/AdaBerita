@@ -45,12 +45,12 @@ class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.New
             binding.tvNewsSource.text = item.source?.name
 
             binding.root.setOnClickListener { view ->
-                item.url?.let { listener.onClick(it) }
+                listener.onClick(item)
             }
         }
     }
 
     interface OnItemClickListener{
-        fun onClick(newsUrl: String)
+        fun onClick(item: ArticlesItem)
     }
 }
