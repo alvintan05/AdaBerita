@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_category" />
     <fragment
         android:id="@+id/navigation_bookmarks"
-        android:name="com.aldev.adaberita.ui.BookmarksFragment"
+        android:name="com.aldev.adaberita.ui.bookmarks.BookmarksFragment"
         android:label="Bookmarks"
         tools:layout="@layout/fragment_bookmarks" />
 </navigation>

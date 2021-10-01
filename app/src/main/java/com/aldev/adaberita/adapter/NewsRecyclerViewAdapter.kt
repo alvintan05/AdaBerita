@@ -3,18 +3,30 @@ package com.aldev.adaberita.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.aldev.adaberita.databinding.ItemListNewsBinding
+import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
+import com.aldev.adaberita.databinding.ItemListNewsBinding
 import com.bumptech.glide.Glide
 
 class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.NewsViewHolder>() {
 
     private var newsList = listOf<ArticlesItem>()
+    private var bookmarkList = listOf<BookmarkNewsEntity>()
     private lateinit var listener: OnItemClickListener
+    private var isBookmarked = false
 
     fun setList(list: List<ArticlesItem>) {
         newsList = list
         notifyDataSetChanged()
+    }
+
+    fun setBookmarkList(list: List<BookmarkNewsEntity>) {
+        bookmarkList = list
+        notifyDataSetChanged()
+    }
+
+    fun setBookmarkStatus(status: Boolean) {
+        isBookmarked = status
     }
 
     fun setOnClickListener(listener: OnItemClickListener) {
@@ -33,7 +45,7 @@ class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.New
 
     override fun getItemCount(): Int = newsList.size
 
-    inner class NewsViewHolder(val binding: ItemListNewsBinding) :
+    inner class NewsViewHolder(private val binding: ItemListNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindItem(item: ArticlesItem) {
@@ -45,12 +57,28 @@ class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.New
             binding.tvNewsSource.text = item.source?.name
 
             binding.root.setOnClickListener { view ->
-                listener.onClick(item)
+                if (isBookmarked) {
+                    listener.onClickFromBookmarks(
+                        BookmarkNewsEntity(
+                            publishedAt = item.publishedAt,
+                            author = item.author,
+                            urlToImage = item.urlToImage,
+                            description = item.description,
+                            source = item.source,
+                            title = item.title,
+                            url = item.url,
+                            content = item.content
+                        )
+                    )
+                } else {
+                    listener.onClick(item)
+                }
             }
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onClick(item: ArticlesItem)
+        fun onClickFromBookmarks(item: BookmarkNewsEntity)
     }
 }

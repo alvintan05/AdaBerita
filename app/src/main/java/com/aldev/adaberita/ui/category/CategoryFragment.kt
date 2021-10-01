@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
+import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.network.RetrofitServer
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
@@ -45,7 +46,7 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
             setHasFixedSize(true)
         }
 
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel = ViewModelProvider(this, factory)[CategoryViewModel::class.java]
 
         viewModel.data.observe(viewLifecycleOwner, { resource ->
@@ -68,6 +69,10 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 intent.putExtra("url", item.url)
                 intent.putExtra("newsTitle", item.title)
                 activity?.startActivity(intent)
+            }
+
+            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
+                TODO("Not yet implemented")
             }
         })
 
