@@ -5,8 +5,9 @@ import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.RemoteDataSource
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
+import javax.inject.Inject
 
-class NewsRepository private constructor(
+class NewsRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : NewsDataSource {

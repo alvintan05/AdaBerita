@@ -64,7 +64,8 @@ class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.New
                             author = item.author,
                             urlToImage = item.urlToImage,
                             description = item.description,
-                            source = item.source,
+                            sourceName = item.source?.name,
+                            sourceId = item.source?.id,
                             title = item.title,
                             url = item.url,
                             content = item.content

@@ -10,8 +10,9 @@ import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
 
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookmarksViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+class BookmarksViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel() {
 
     val data: LiveData<Resource<List<BookmarkNewsEntity>>> get() = mData
 

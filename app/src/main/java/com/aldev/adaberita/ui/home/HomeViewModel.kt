@@ -9,8 +9,9 @@ import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+class HomeViewModel @Inject constructor (private val newsRepository: NewsRepository) : ViewModel() {
 
     val data: LiveData<Resource<List<ArticlesItem>>> get() = mData
 

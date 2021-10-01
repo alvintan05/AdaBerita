@@ -4,8 +4,9 @@ import com.aldev.adaberita.data.source.remote.network.RetrofitServer
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
+import javax.inject.Inject
 
-class RemoteDataSource {
+class RemoteDataSource @Inject constructor() {
 
     companion object {
         @Volatile
