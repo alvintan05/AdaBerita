@@ -4,14 +4,15 @@ import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.local.room.BookmarkDao
 import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
+import javax.inject.Inject
 
-class LocalDataSource private constructor(private val bookmarkDao: BookmarkDao) {
-    companion object {
-        private var instance: LocalDataSource? = null
-
-        fun getInstance(bookmarkDao: BookmarkDao): LocalDataSource =
-            instance ?: LocalDataSource(bookmarkDao)
-    }
+class LocalDataSource @Inject constructor(private val bookmarkDao: BookmarkDao) {
+//    companion object {
+//        private var instance: LocalDataSource? = null
+//
+//        fun getInstance(bookmarkDao: BookmarkDao): LocalDataSource =
+//            instance ?: LocalDataSource(bookmarkDao)
+//    }
 
     suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>> {
         val data = bookmarkDao.getBookmarkList()

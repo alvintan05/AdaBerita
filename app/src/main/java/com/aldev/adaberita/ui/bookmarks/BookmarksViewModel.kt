@@ -8,10 +8,13 @@ import com.aldev.adaberita.data.NewsRepository
 import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookmarksViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+@HiltViewModel
+class BookmarksViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel() {
 
     val data: LiveData<Resource<List<BookmarkNewsEntity>>> get() = mData
 

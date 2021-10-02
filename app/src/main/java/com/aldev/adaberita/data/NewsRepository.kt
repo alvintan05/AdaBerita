@@ -5,24 +5,25 @@ import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.RemoteDataSource
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
+import javax.inject.Inject
 
-class NewsRepository private constructor(
+class NewsRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : NewsDataSource {
 
-    companion object {
-        @Volatile
-        private var instance: NewsRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localDataSource: LocalDataSource
-        ): NewsRepository =
-            instance ?: synchronized(this) {
-                instance ?: NewsRepository(remoteData, localDataSource)
-            }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: NewsRepository? = null
+//
+//        fun getInstance(
+//            remoteData: RemoteDataSource,
+//            localDataSource: LocalDataSource
+//        ): NewsRepository =
+//            instance ?: synchronized(this) {
+//                instance ?: NewsRepository(remoteData, localDataSource)
+//            }
+//    }
 
     override suspend fun getHeadlineNews(): Resource<List<ArticlesItem>?> =
         remoteDataSource.getHeadlineNews()

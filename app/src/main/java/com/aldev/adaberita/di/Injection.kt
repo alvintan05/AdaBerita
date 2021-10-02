@@ -7,11 +7,11 @@ import com.aldev.adaberita.data.source.local.room.BookmarkDatabase
 import com.aldev.adaberita.data.source.remote.RemoteDataSource
 
 object Injection {
-    fun provideRepository(context: Context): NewsRepository {
-        val database = BookmarkDatabase.getInstance(context)
-
-        val remoteDataSource = RemoteDataSource.getInstance()
-        val localDataSource = LocalDataSource.getInstance(database.bookmarkDao())
-        return NewsRepository.getInstance(remoteDataSource, localDataSource)
-    }
+//    fun provideRepository(context: Context): NewsRepository {
+//        val database = BookmarkDatabase.getInstance(context)
+//
+//        val remoteDataSource = RemoteDataSource.getInstance()
+//        val localDataSource = LocalDataSource.getInstance(database.bookmarkDao())
+//        return NewsRepository.getInstance(remoteDataSource, localDataSource)
+//    }
 }

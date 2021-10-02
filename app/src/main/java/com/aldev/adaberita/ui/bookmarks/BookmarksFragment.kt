@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
 import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
@@ -14,14 +15,16 @@ import com.aldev.adaberita.databinding.FragmentBookmarksBinding
 import com.aldev.adaberita.ui.WebViewActivity
 import com.aldev.adaberita.utils.Status
 import com.aldev.adaberita.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BookmarksFragment : Fragment() {
 
     private var _binding: FragmentBookmarksBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
-    private lateinit var viewModel: BookmarksViewModel
+    private val viewModel: BookmarksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +42,8 @@ class BookmarksFragment : Fragment() {
         binding.rvBookmarks.setHasFixedSize(true)
         recyclerViewAdapter.setBookmarkStatus(true)
 
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        viewModel = ViewModelProvider(this, factory)[BookmarksViewModel::class.java]
+//        val factory = ViewModelFactory.getInstance(requireActivity())
+//        viewModel = ViewModelProvider(this, factory)[BookmarksViewModel::class.java]
 
         viewModel.data.observe(viewLifecycleOwner, { resource ->
             when (resource.status) {

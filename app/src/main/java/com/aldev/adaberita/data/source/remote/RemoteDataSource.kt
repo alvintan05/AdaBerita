@@ -4,18 +4,19 @@ import com.aldev.adaberita.data.source.remote.network.RetrofitServer
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
+import javax.inject.Inject
 
-class RemoteDataSource {
+class RemoteDataSource @Inject constructor() {
 
-    companion object {
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(): RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource()
-            }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: RemoteDataSource? = null
+//
+//        fun getInstance(): RemoteDataSource =
+//            instance ?: synchronized(this) {
+//                instance ?: RemoteDataSource()
+//            }
+//    }
 
     suspend fun getHeadlineNews(): Resource<List<ArticlesItem>?> {
         val response = RetrofitServer.getService().getHeadlinesNews()
