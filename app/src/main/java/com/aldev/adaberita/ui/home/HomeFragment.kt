@@ -13,6 +13,7 @@ import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentHomeBinding
 import com.aldev.adaberita.ui.WebViewActivity
+import com.aldev.adaberita.utils.Resource
 import com.aldev.adaberita.utils.Status
 import com.aldev.adaberita.utils.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
