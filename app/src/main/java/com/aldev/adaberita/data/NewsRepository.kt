@@ -12,23 +12,10 @@ class NewsRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : NewsDataSource {
 
-//    companion object {
-//        @Volatile
-//        private var instance: NewsRepository? = null
-//
-//        fun getInstance(
-//            remoteData: RemoteDataSource,
-//            localDataSource: LocalDataSource
-//        ): NewsRepository =
-//            instance ?: synchronized(this) {
-//                instance ?: NewsRepository(remoteData, localDataSource)
-//            }
-//    }
-
-    override suspend fun getHeadlineNews(): Resource<List<ArticlesItem>?> =
+    override suspend fun getHeadlineNews(): Resource<List<ArticlesItem>> =
         remoteDataSource.getHeadlineNews()
 
-    override suspend fun getHeadlineNewsFromCategory(categoryId: String): Resource<List<ArticlesItem>?> =
+    override suspend fun getHeadlineNewsFromCategory(categoryId: String): Resource<List<ArticlesItem>> =
         remoteDataSource.getHeadlineNewsFromCategory(categoryId)
 
     override suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>> =

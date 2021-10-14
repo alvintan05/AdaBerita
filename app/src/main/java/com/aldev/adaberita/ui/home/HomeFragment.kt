@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
 import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentHomeBinding
 import com.aldev.adaberita.ui.WebViewActivity
 import com.aldev.adaberita.utils.Resource
-import com.aldev.adaberita.utils.Status
-import com.aldev.adaberita.utils.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +22,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
-//    private lateinit var viewModel: HomeViewModel
+
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -43,19 +40,19 @@ class HomeFragment : Fragment() {
         binding.rvHome.adapter = recyclerViewAdapter
         binding.rvHome.setHasFixedSize(true)
 
-//        val factory = ViewModelFactory.getInstance(requireActivity())
-//        viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
-
         viewModel.data.observe(viewLifecycleOwner, { resource ->
-            when (resource.status) {
-                Status.LOADING -> binding.swipeRefresh.isRefreshing = true
-                Status.SUCCESS -> {
+            when (resource) {
+                is Resource.Loading -> binding.swipeRefresh.isRefreshing = true
+                is Resource.Success -> {
                     binding.swipeRefresh.isRefreshing = false
                     resource.data?.let { showData(it) }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.swipeRefresh.isRefreshing = false
-                    resource.message?.let { showError(it) }
+                    resource.error?.let { showError(it) }
+                }
+                else -> {
+
                 }
             }
         })
