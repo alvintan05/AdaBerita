@@ -8,24 +8,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
 import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
-import com.aldev.adaberita.data.source.remote.network.RetrofitServer
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
 import com.aldev.adaberita.ui.WebViewActivity
-import com.aldev.adaberita.utils.Status
-import com.aldev.adaberita.utils.ViewModelFactory
+import com.aldev.adaberita.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
-    private lateinit var viewModel: CategoryViewModel
+    private val viewModel: CategoryViewModel by viewModels()
     private var headlineId: String = " "
 
     override fun onCreateView(
@@ -46,18 +46,18 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
             setHasFixedSize(true)
         }
 
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        viewModel = ViewModelProvider(this, factory)[CategoryViewModel::class.java]
-
         viewModel.data.observe(viewLifecycleOwner, { resource ->
-            when (resource.status) {
-                Status.LOADING -> binding.swipeRefresh.isRefreshing = true
-                Status.SUCCESS -> {
+            when (resource) {
+                is Resource.Loading -> binding.swipeRefresh.isRefreshing = true
+                is Resource.Success -> {
                     binding.swipeRefresh.isRefreshing = false
                     resource.data?.let { showData(it) }
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     binding.swipeRefresh.isRefreshing = false
+                }
+                else -> {
+
                 }
             }
         })

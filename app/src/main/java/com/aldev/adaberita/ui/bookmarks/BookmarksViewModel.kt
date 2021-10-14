@@ -7,30 +7,26 @@ import androidx.lifecycle.viewModelScope
 import com.aldev.adaberita.data.NewsRepository
 import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.utils.Resource
-import com.aldev.adaberita.utils.Status
-
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookmarksViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+@HiltViewModel
+class BookmarksViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+    ViewModel() {
 
-    val data: LiveData<Resource<List<BookmarkNewsEntity>>> get() = mData
+    val data: LiveData<Resource<List<BookmarkNewsEntity>>> get() = _data
 
-    private val mData = MutableLiveData<Resource<List<BookmarkNewsEntity>>>().apply {
-        value = Resource(null, null, null)
-    }
-
-    init {
-        getData()
+    private val _data: MutableLiveData<Resource<List<BookmarkNewsEntity>>> by lazy {
+        MutableLiveData<Resource<List<BookmarkNewsEntity>>>().also {
+            getData()
+        }
     }
 
     fun getData() = viewModelScope.launch {
-        showLoading()
+        _data.value = Resource.Loading()
         val result = newsRepository.getBookmarkList()
-        mData.value = mData.value?.copy(result.status, result.data, result.message)
-    }
-
-    private fun showLoading() {
-        mData.value = mData.value?.copy(Status.LOADING, null, null)
+        _data.value = result
     }
 
 }

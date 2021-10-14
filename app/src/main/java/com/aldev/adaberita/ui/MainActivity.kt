@@ -10,7 +10,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.aldev.adaberita.R
 import com.aldev.adaberita.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

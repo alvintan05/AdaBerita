@@ -7,23 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.aldev.adaberita.data.NewsRepository
 import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
-import com.aldev.adaberita.utils.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoryViewModel(private val newsRepository: NewsRepository): ViewModel() {
-    val data: LiveData<Resource<List<ArticlesItem>>> get() = mData
+@HiltViewModel
+class CategoryViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+    ViewModel() {
 
-    private val mData = MutableLiveData<Resource<List<ArticlesItem>>>().apply {
-        value = Resource(null, null, null)
+    val data: LiveData<Resource<List<ArticlesItem>>> get() = _data
+
+    private val _data: MutableLiveData<Resource<List<ArticlesItem>>> by lazy {
+        MutableLiveData<Resource<List<ArticlesItem>>>()
     }
 
     fun getData(categoryId: String) = viewModelScope.launch {
-        showLoading()
+        _data.value = Resource.Loading()
         val result = newsRepository.getHeadlineNewsFromCategory(categoryId)
-        mData.value = mData.value?.copy(result.status, result.data, result.message)
-    }
-
-    private fun showLoading(){
-        mData.value = mData.value?.copy(Status.LOADING, null, null)
+        _data.value = result
     }
 }
