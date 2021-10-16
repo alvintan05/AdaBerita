@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
-import com.aldev.adaberita.data.source.remote.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentHomeBinding
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.ui.WebViewActivity
-import com.aldev.adaberita.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -21,7 +26,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
+    private lateinit var recyclerViewAdapter: NewsPagingAdapter
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -36,46 +41,40 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewAdapter = NewsRecyclerViewAdapter()
-        binding.rvHome.adapter = recyclerViewAdapter
+        recyclerViewAdapter = NewsPagingAdapter()
         binding.rvHome.setHasFixedSize(true)
+        binding.rvHome.adapter = recyclerViewAdapter
 
         viewModel.data.observe(viewLifecycleOwner, { resource ->
-            when (resource) {
-                is Resource.Loading -> binding.swipeRefresh.isRefreshing = true
-                is Resource.Success -> {
-                    binding.swipeRefresh.isRefreshing = false
-                    resource.data?.let { showData(it) }
-                }
-                is Resource.Error -> {
-                    binding.swipeRefresh.isRefreshing = false
-                    resource.error?.let { showError(it) }
-                }
-                else -> {
-
-                }
-            }
+            recyclerViewAdapter.submitData(viewLifecycleOwner.lifecycle, resource)
         })
 
-        recyclerViewAdapter.setOnClickListener(object :
-            NewsRecyclerViewAdapter.OnItemClickListener {
-            override fun onClick(item: ArticlesItem) {
-                val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra("url", item.url)
-                intent.putExtra("newsTitle", item.title)
-                activity?.startActivity(intent)
+        lifecycleScope.launch {
+            recyclerViewAdapter.loadStateFlow.collectLatest {
+                binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                binding.rvHome.isVisible = it.refresh !is LoadState.Error
+                binding.ivWarning.isVisible = it.refresh is LoadState.Error
             }
+        }
 
-            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
-                TODO("Not yet implemented")
-            }
-        })
+//        recyclerViewAdapter.setOnClickListener(object :
+//            NewsRecyclerViewAdapter.OnItemClickListener {
+//            override fun onClick(item: ArticlesItem) {
+//                val intent = Intent(activity, WebViewActivity::class.java)
+//                intent.putExtra("url", item.url)
+//                intent.putExtra("newsTitle", item.title)
+//                activity?.startActivity(intent)
+//            }
+//
+//            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
+//                TODO("Not yet implemented")
+//            }
+//        })
 
-        binding.swipeRefresh.setOnRefreshListener { viewModel.getData() }
+        binding.swipeRefresh.setOnRefreshListener { recyclerViewAdapter.refresh() }
     }
 
     private fun showData(data: List<ArticlesItem>) {
-        recyclerViewAdapter.setList(data)
         binding.rvHome.visibility = View.VISIBLE
         binding.tvErrorMessage.visibility = View.GONE
         binding.ivWarning.visibility = View.GONE

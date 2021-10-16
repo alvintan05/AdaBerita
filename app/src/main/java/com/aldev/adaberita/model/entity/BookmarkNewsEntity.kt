@@ -1,9 +1,8 @@
-package com.aldev.adaberita.data.source.local.entity
+package com.aldev.adaberita.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.aldev.adaberita.data.source.remote.response.Source
 
 @Entity(tableName = "bookmark")
 data class BookmarkNewsEntity(

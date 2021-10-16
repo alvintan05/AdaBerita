@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aldev.adaberita.data.NewsRepository
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

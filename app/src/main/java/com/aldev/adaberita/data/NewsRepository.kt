@@ -1,9 +1,11 @@
 package com.aldev.adaberita.data
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import com.aldev.adaberita.data.source.local.LocalDataSource
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.remote.RemoteDataSource
-import com.aldev.adaberita.data.source.remote.response.ArticlesItem
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.utils.Resource
 import javax.inject.Inject
 
@@ -12,7 +14,7 @@ class NewsRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : NewsDataSource {
 
-    override suspend fun getHeadlineNews(): Resource<List<ArticlesItem>> =
+    override suspend fun getHeadlineNews(): LiveData<PagingData<ArticlesItem>> =
         remoteDataSource.getHeadlineNews()
 
     override suspend fun getHeadlineNewsFromCategory(categoryId: String): Resource<List<ArticlesItem>> =

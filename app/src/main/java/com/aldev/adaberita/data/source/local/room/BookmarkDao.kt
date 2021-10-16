@@ -1,7 +1,7 @@
 package com.aldev.adaberita.data.source.local.room
 
 import androidx.room.*
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 
 @Dao
 interface BookmarkDao {

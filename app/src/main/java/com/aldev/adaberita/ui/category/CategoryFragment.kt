@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
-import com.aldev.adaberita.data.source.remote.response.ArticlesItem
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
 import com.aldev.adaberita.ui.WebViewActivity
 import com.aldev.adaberita.utils.Resource

@@ -1,6 +1,6 @@
 package com.aldev.adaberita.data.source.local
 
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.local.room.BookmarkDao
 import com.aldev.adaberita.utils.Resource
 import javax.inject.Inject

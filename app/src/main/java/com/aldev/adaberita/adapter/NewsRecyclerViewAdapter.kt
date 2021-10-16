@@ -3,8 +3,8 @@ package com.aldev.adaberita.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.aldev.adaberita.data.source.local.entity.BookmarkNewsEntity
-import com.aldev.adaberita.data.source.remote.response.ArticlesItem
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
+import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.databinding.ItemListNewsBinding
 import com.bumptech.glide.Glide
 
