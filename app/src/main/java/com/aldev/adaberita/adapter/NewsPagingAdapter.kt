@@ -13,6 +13,12 @@ class NewsPagingAdapter : PagingDataAdapter<ArticlesItem, NewsPagingAdapter.View
     DIFF_CALLBACK
 ) {
 
+    private lateinit var listener: OnItemClickListener
+
+    fun setOnClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemListNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
@@ -32,6 +38,10 @@ class NewsPagingAdapter : PagingDataAdapter<ArticlesItem, NewsPagingAdapter.View
 
             binding.tvNewsTitle.text = item.title
             binding.tvNewsSource.text = item.source?.name
+
+            binding.root.setOnClickListener {
+                listener.onClick(item)
+            }
         }
     }
 
@@ -45,5 +55,9 @@ class NewsPagingAdapter : PagingDataAdapter<ArticlesItem, NewsPagingAdapter.View
                 oldItem == newItem
 
         }
+    }
+
+    interface OnItemClickListener {
+        fun onClick(item: ArticlesItem)
     }
 }

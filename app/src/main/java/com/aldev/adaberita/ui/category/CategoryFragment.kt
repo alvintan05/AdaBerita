@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.aldev.adaberita.R
-import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
-import com.aldev.adaberita.model.entity.BookmarkNewsEntity
-import com.aldev.adaberita.model.response.ArticlesItem
+import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
+import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.ui.WebViewActivity
-import com.aldev.adaberita.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -24,7 +27,7 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
+    private lateinit var recyclerViewAdapter: NewsPagingAdapter
     private val viewModel: CategoryViewModel by viewModels()
     private var headlineId: String = " "
 
@@ -40,43 +43,33 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         setUpSpinner()
 
-        recyclerViewAdapter = NewsRecyclerViewAdapter()
+        recyclerViewAdapter = NewsPagingAdapter()
         binding.rvCategory.apply {
             adapter = recyclerViewAdapter
             setHasFixedSize(true)
         }
 
-        viewModel.data.observe(viewLifecycleOwner, { resource ->
-            when (resource) {
-                is Resource.Loading -> binding.swipeRefresh.isRefreshing = true
-                is Resource.Success -> {
-                    binding.swipeRefresh.isRefreshing = false
-                    resource.data?.let { showData(it) }
-                }
-                is Resource.Error -> {
-                    binding.swipeRefresh.isRefreshing = false
-                }
-                else -> {
 
-                }
+
+        lifecycleScope.launch {
+            recyclerViewAdapter.loadStateFlow.collectLatest {
+                binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
+                binding.rvCategory.isVisible = it.refresh !is LoadState.Error
             }
-        })
+        }
 
         recyclerViewAdapter.setOnClickListener(object :
-            NewsRecyclerViewAdapter.OnItemClickListener {
+            NewsPagingAdapter.OnItemClickListener {
             override fun onClick(item: ArticlesItem) {
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra("url", item.url)
                 intent.putExtra("newsTitle", item.title)
                 activity?.startActivity(intent)
             }
-
-            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
-                TODO("Not yet implemented")
-            }
         })
 
-        binding.swipeRefresh.setOnRefreshListener { viewModel.getData(headlineId) }
+
+        binding.swipeRefresh.setOnRefreshListener { recyclerViewAdapter.refresh() }
     }
 
     private fun setUpSpinner() {
@@ -97,15 +90,17 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         headlineId = headlineIdList[position]
 
-        if (headlineId != "") viewModel.getData(headlineId)
+        if (headlineId != "") {
+            viewModel.getData(headlineId)
+            viewModel.data.observe(viewLifecycleOwner, { resource ->
+                if (resource != null) {
+                    recyclerViewAdapter.submitData(viewLifecycleOwner.lifecycle, resource)
+                }
+            })
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
-    }
-
-    private fun showData(data: List<ArticlesItem>) {
-        recyclerViewAdapter.setList(data)
-        binding.rvCategory.visibility = View.VISIBLE
     }
 }

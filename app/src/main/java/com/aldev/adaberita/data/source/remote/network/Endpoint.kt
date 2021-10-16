@@ -19,7 +19,8 @@ interface Endpoint {
     suspend fun getHeadlinesNewsFromCategory(
         @Query("country") countryId: String = "id",
         @Query("apiKey") apiKey: String = ApiKey.API_KEY,
-        @Query("category") category: String
+        @Query("category") category: String,
+        @Query("page") page: Int
     ): Response<NewsResponse>
 
 }

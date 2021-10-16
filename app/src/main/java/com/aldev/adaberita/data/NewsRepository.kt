@@ -17,7 +17,7 @@ class NewsRepository @Inject constructor(
     override suspend fun getHeadlineNews(): LiveData<PagingData<ArticlesItem>> =
         remoteDataSource.getHeadlineNews()
 
-    override suspend fun getHeadlineNewsFromCategory(categoryId: String): Resource<List<ArticlesItem>> =
+    override suspend fun getHeadlineNewsFromCategory(categoryId: String): LiveData<PagingData<ArticlesItem>> =
         remoteDataSource.getHeadlineNewsFromCategory(categoryId)
 
     override suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>> =

@@ -11,9 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.aldev.adaberita.adapter.NewsPagingAdapter
-import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
 import com.aldev.adaberita.databinding.FragmentHomeBinding
-import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.ui.WebViewActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,33 +55,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-//        recyclerViewAdapter.setOnClickListener(object :
-//            NewsRecyclerViewAdapter.OnItemClickListener {
-//            override fun onClick(item: ArticlesItem) {
-//                val intent = Intent(activity, WebViewActivity::class.java)
-//                intent.putExtra("url", item.url)
-//                intent.putExtra("newsTitle", item.title)
-//                activity?.startActivity(intent)
-//            }
-//
-//            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
-//                TODO("Not yet implemented")
-//            }
-//        })
+        recyclerViewAdapter.setOnClickListener(object :
+            NewsPagingAdapter.OnItemClickListener {
+            override fun onClick(item: ArticlesItem) {
+                val intent = Intent(activity, WebViewActivity::class.java)
+                intent.putExtra("url", item.url)
+                intent.putExtra("newsTitle", item.title)
+                activity?.startActivity(intent)
+            }
+        })
 
         binding.swipeRefresh.setOnRefreshListener { recyclerViewAdapter.refresh() }
-    }
-
-    private fun showData(data: List<ArticlesItem>) {
-        binding.rvHome.visibility = View.VISIBLE
-        binding.tvErrorMessage.visibility = View.GONE
-        binding.ivWarning.visibility = View.GONE
-    }
-
-    private fun showError(message: String) {
-        binding.tvErrorMessage.text = message
-        binding.tvErrorMessage.visibility = View.VISIBLE
-        binding.ivWarning.visibility = View.VISIBLE
-        binding.rvHome.visibility = View.GONE
     }
 }
