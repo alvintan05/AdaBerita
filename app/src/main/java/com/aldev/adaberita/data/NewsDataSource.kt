@@ -13,5 +13,6 @@ interface NewsDataSource {
     // Local
     suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>>
     suspend fun addBookmark(entity: BookmarkNewsEntity)
-    suspend fun removeBookmark(id: Int)
+    suspend fun removeBookmark(entity: BookmarkNewsEntity)
+    suspend fun checkIsNewsBookmarked(title: String): Boolean
 }

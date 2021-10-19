@@ -10,7 +10,7 @@ data class ArticlesItem(
     val urlToImage: String? = null,
     val description: String? = null,
     val source: Source? = null,
-    val title: String? = null,
+    val title: String,
     val url: String? = null,
     val content: String? = null
 ) : Parcelable

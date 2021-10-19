@@ -1,5 +1,6 @@
 package com.aldev.adaberita.data.source.local
 
+import androidx.lifecycle.LiveData
 import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.data.source.local.room.BookmarkDao
 import com.aldev.adaberita.utils.Resource
@@ -18,5 +19,8 @@ class LocalDataSource @Inject constructor(private val bookmarkDao: BookmarkDao) 
 
     suspend fun addBookmark(entity: BookmarkNewsEntity) = bookmarkDao.addBookmark(entity)
 
-    suspend fun removeBookmark(id: Int) = bookmarkDao.removeBookmark(id)
+    suspend fun removeBookmark(entity: BookmarkNewsEntity) = bookmarkDao.removeBookmark(entity)
+
+    suspend fun checkIsNewsBookmarked(title: String): Boolean =
+        bookmarkDao.checkIsNewsBookmarked(title)
 }

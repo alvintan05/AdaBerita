@@ -27,8 +27,11 @@ class NewsRepository @Inject constructor(
         localDataSource.addBookmark(entity)
     }
 
-    override suspend fun removeBookmark(id: Int) {
-        localDataSource.removeBookmark(id)
+    override suspend fun removeBookmark(entity: BookmarkNewsEntity) {
+        localDataSource.removeBookmark(entity)
     }
+
+    override suspend fun checkIsNewsBookmarked(title: String): Boolean =
+        localDataSource.checkIsNewsBookmarked(title)
 
 }

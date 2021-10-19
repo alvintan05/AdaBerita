@@ -1,4 +1,4 @@
-package com.aldev.adaberita.ui
+package com.aldev.adaberita.ui.webview
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -10,30 +10,40 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.aldev.adaberita.R
 import com.aldev.adaberita.databinding.ActivityWebViewBinding
+import com.aldev.adaberita.model.response.ArticlesItem
+import dagger.hilt.android.AndroidEntryPoint
 
-class WebViewActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class WebviewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWebViewBinding
     private lateinit var newsUrl: String
     private lateinit var mainUrlNews: String
+    private lateinit var articlesItem: ArticlesItem
+
+    private lateinit var bookmarkIcon: MenuItem
+
+    private val viewModel: WebviewViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainUrlNews = intent.getStringExtra("url").toString()
+        articlesItem = intent.getParcelableExtra("item")!!
+        mainUrlNews = articlesItem.url ?: ""
         newsUrl = mainUrlNews
-        val newsTitle = intent.getStringExtra("newsTitle").toString()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setHomeAsUpIndicator(R.drawable.ic_close_black)
             setDisplayHomeAsUpEnabled(true)
-            title = newsTitle
+            title = articlesItem.title
         }
 
         binding.progressBar.max = 100
@@ -58,14 +68,39 @@ class WebViewActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_webview_toolbar, menu)
-        return super.onCreateOptionsMenu(menu)
+        bookmarkIcon = menu.findItem(R.id.bookmark)
+
+        viewModel.getBookmarkStatus(articlesItem.title)
+        viewModel.bookmarkStatus.observe(this, { status ->
+            if (status) {
+                bookmarkIcon.icon =
+                    ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black_fill)
+            } else {
+                bookmarkIcon.icon = ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black)
+            }
+        })
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.refresh -> binding.webView.loadUrl(newsUrl)
+            R.id.bookmark -> {
+                viewModel.getBookmarkStatus(articlesItem.title)
+                viewModel.bookmarkStatus.observe(this, { status ->
+                    if (status) {
+                        viewModel.deleteBookmark(articlesItem)
+                        bookmarkIcon.icon =
+                            ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black)
+                    } else {
+                        viewModel.addBookmark(articlesItem)
+                        bookmarkIcon.icon =
+                            ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black_fill)
+                    }
+                })
+            }
         }
         return super.onOptionsItemSelected(item)
     }

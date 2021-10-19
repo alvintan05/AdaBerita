@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AdaBerita">
         <activity
-            android:name=".ui.WebViewActivity"
+            android:name=".ui.webview.WebviewActivity"
             android:theme="@style/Theme.AdaBerita.NoToolbar"></activity>
         <activity android:name=".ui.MainActivity">
             <intent-filter>

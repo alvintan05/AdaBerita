@@ -17,7 +17,7 @@ import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
 import com.aldev.adaberita.model.response.ArticlesItem
-import com.aldev.adaberita.ui.WebViewActivity
+import com.aldev.adaberita.ui.webview.WebviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -60,7 +60,7 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
         recyclerViewAdapter.setOnClickListener(object :
             NewsPagingAdapter.OnItemClickListener {
             override fun onClick(item: ArticlesItem) {
-                val intent = Intent(activity, WebViewActivity::class.java)
+                val intent = Intent(activity, WebviewActivity::class.java)
                 intent.putExtra("url", item.url)
                 intent.putExtra("newsTitle", item.title)
                 activity?.startActivity(intent)

@@ -13,7 +13,7 @@ import com.aldev.adaberita.adapter.NewsRecyclerViewAdapter
 import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.databinding.FragmentBookmarksBinding
-import com.aldev.adaberita.ui.WebViewActivity
+import com.aldev.adaberita.ui.webview.WebviewActivity
 import com.aldev.adaberita.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,8 +66,8 @@ class BookmarksFragment : Fragment() {
             }
 
             override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
-                val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra("id", item.id)
+                val intent = Intent(activity, WebviewActivity::class.java)
+                intent.putExtra("id", item.title)
                 intent.putExtra("url", item.url)
                 intent.putExtra("newsTitle", item.title)
                 activity?.startActivity(intent)
