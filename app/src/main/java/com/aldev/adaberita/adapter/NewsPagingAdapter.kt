@@ -2,9 +2,11 @@ package com.aldev.adaberita.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.aldev.adaberita.R
 import com.aldev.adaberita.databinding.ItemListNewsBinding
 import com.aldev.adaberita.model.response.ArticlesItem
 import com.bumptech.glide.Glide
@@ -20,15 +22,26 @@ class NewsPagingAdapter : PagingDataAdapter<ArticlesItem, NewsPagingAdapter.View
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemListNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_list_news,
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        item?.let { holder.bindItem(it) }
-
+        holder.binding.news = item
+        holder.binding.root.setOnClickListener {
+            if (item != null) {
+                listener.onClick(item)
+            }
+        }
     }
 
-    inner class ViewHolder(private val binding: ItemListNewsBinding) :
+    inner class ViewHolder(val binding: ItemListNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindItem(item: ArticlesItem) {

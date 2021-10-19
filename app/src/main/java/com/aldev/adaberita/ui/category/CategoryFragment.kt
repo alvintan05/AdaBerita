@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +36,7 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
         return binding.root
     }
 
@@ -48,8 +49,6 @@ class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
             adapter = recyclerViewAdapter
             setHasFixedSize(true)
         }
-
-
 
         lifecycleScope.launch {
             recyclerViewAdapter.loadStateFlow.collectLatest {

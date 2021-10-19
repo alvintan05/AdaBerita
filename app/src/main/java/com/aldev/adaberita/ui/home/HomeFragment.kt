@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.databinding.FragmentHomeBinding
 import com.aldev.adaberita.model.response.ArticlesItem
@@ -32,7 +34,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        _binding!!.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

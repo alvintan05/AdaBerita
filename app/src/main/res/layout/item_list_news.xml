@@ -1,81 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="5dp"
-    android:layout_marginTop="5dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="5dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="news"
+            type="com.aldev.adaberita.model.response.ArticlesItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="5dp">
 
-        <ImageView
-            android:id="@+id/iv_news"
-            android:layout_width="100dp"
-            android:scaleType="centerCrop"
-            android:layout_height="100dp"
-            android:importantForAccessibility="no"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_news_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/roboto_bold"
-            android:maxLines="2"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_news"
-            app:layout_constraintTop_toTopOf="@id/iv_news"
-            tools:text="Jaga Asupan Makanan dan Minuman Ini untuk Kontrol Gula Darah - Bisnis.com" />
+            <ImageView
+                android:id="@+id/iv_news"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                app:image="@{news.urlToImage}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/ic_launcher" />
 
-        <TextView
-            android:id="@+id/tv_news_source"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="4dp"
-            android:fontFamily="@font/roboto"
-            android:gravity="end"
-            android:maxLines="1"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_news_publish_date"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_news_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_news_title"
-            app:layout_constraintVertical_bias="1.0"
-            tools:text="Bisnis.com" />
+            <TextView
+                android:id="@+id/tv_news_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_bold"
+                android:maxLines="2"
+                android:text="@{news.title}"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_news"
+                app:layout_constraintTop_toTopOf="@id/iv_news"
+                tools:text="Jaga Asupan Makanan dan Minuman Ini untuk Kontrol Gula Darah - Bisnis.com" />
 
-        <TextView
-            android:id="@+id/tv_news_publish_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:fontFamily="@font/roboto"
-            android:gravity="end"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_news_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_news_source"
-            tools:text="14-09-2021 19:00" />
+            <TextView
+                android:id="@+id/tv_news_source"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="end"
+                android:maxLines="1"
+                android:text="@{news.source.name}"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_news_publish_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_news_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_news_title"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="Bisnis.com" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_news_publish_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_news_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_news_source"
+                tools:text="14-09-2021 19:00" />
 
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
