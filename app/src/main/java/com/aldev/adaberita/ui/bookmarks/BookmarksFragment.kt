@@ -2,6 +2,7 @@ package com.aldev.adaberita.ui.bookmarks
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,52 +43,20 @@ class BookmarksFragment : Fragment() {
         binding.rvBookmarks.setHasFixedSize(true)
         recyclerViewAdapter.setBookmarkStatus(true)
 
-        viewModel.data.observe(viewLifecycleOwner, { resource ->
-            when (resource) {
-                is Resource.Loading -> binding.swipeRefresh.isRefreshing = true
-                is Resource.Success -> {
-                    binding.swipeRefresh.isRefreshing = false
-                    resource.data?.let { showData(it) }
-                }
-                is Resource.Error -> {
-                    binding.swipeRefresh.isRefreshing = false
-                    resource.error?.let { showError(it) }
-                }
-                is Resource.Empty -> {
-
-                }
-            }
+        viewModel.data.observe(viewLifecycleOwner, { list ->
+            Log.d("TAG", "list size: ${list.size}")
+            recyclerViewAdapter.setBookmarkList(list)
         })
 
         recyclerViewAdapter.setOnClickListener(object :
             NewsRecyclerViewAdapter.OnItemClickListener {
-            override fun onClick(item: ArticlesItem) {
-
-            }
-
-            override fun onClickFromBookmarks(item: BookmarkNewsEntity) {
+            override fun onClick(item: BookmarkNewsEntity) {
                 val intent = Intent(activity, WebviewActivity::class.java)
-                intent.putExtra("id", item.title)
-                intent.putExtra("url", item.url)
-                intent.putExtra("newsTitle", item.title)
+                intent.putExtra("item", item)
                 activity?.startActivity(intent)
             }
         })
 
         binding.swipeRefresh.setOnRefreshListener { }
-    }
-
-    private fun showData(data: List<BookmarkNewsEntity>) {
-        recyclerViewAdapter.setBookmarkList(data)
-        binding.rvBookmarks.visibility = View.VISIBLE
-        binding.tvErrorMessage.visibility = View.GONE
-        binding.ivWarning.visibility = View.GONE
-    }
-
-    private fun showError(message: String) {
-        binding.tvErrorMessage.text = message
-        binding.tvErrorMessage.visibility = View.VISIBLE
-        binding.ivWarning.visibility = View.VISIBLE
-        binding.rvBookmarks.visibility = View.GONE
     }
 }

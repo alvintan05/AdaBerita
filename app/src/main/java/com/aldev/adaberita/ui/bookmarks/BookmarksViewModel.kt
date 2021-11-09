@@ -12,21 +12,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BookmarksViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+class BookmarksViewModel @Inject constructor(newsRepository: NewsRepository) :
     ViewModel() {
 
-    val data: LiveData<Resource<List<BookmarkNewsEntity>>> get() = _data
-
-    private val _data: MutableLiveData<Resource<List<BookmarkNewsEntity>>> by lazy {
-        MutableLiveData<Resource<List<BookmarkNewsEntity>>>().also {
-            getData()
-        }
-    }
-
-    fun getData() = viewModelScope.launch {
-        _data.value = Resource.Loading()
-        val result = newsRepository.getBookmarkList()
-        _data.value = result
-    }
+    val data: LiveData<List<BookmarkNewsEntity>> = newsRepository.getBookmarkList()
 
 }

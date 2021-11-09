@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.databinding.FragmentHomeBinding
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.ui.webview.WebviewActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +61,7 @@ class HomeFragment : Fragment() {
 
         recyclerViewAdapter.setOnClickListener(object :
             NewsPagingAdapter.OnItemClickListener {
-            override fun onClick(item: ArticlesItem) {
+            override fun onClick(item: BookmarkNewsEntity) {
                 val intent = Intent(activity, WebviewActivity::class.java)
                 intent.putExtra("item", item)
                 activity?.startActivity(intent)

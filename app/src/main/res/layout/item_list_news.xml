@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="news"
-            type="com.aldev.adaberita.model.response.ArticlesItem" />
+            type="com.aldev.adaberita.model.entity.BookmarkNewsEntity" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -61,7 +62,7 @@
                 android:fontFamily="@font/roboto"
                 android:gravity="end"
                 android:maxLines="1"
-                android:text="@{news.source.name}"
+                android:text="@{news.sourceName}"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@id/tv_news_publish_date"

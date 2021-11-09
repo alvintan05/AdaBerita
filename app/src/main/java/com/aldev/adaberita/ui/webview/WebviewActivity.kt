@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.aldev.adaberita.R
 import com.aldev.adaberita.databinding.ActivityWebViewBinding
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,11 +25,13 @@ class WebviewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebViewBinding
     private lateinit var newsUrl: String
     private lateinit var mainUrlNews: String
-    private lateinit var articlesItem: ArticlesItem
+    private lateinit var articlesItem: BookmarkNewsEntity
 
     private lateinit var bookmarkIcon: MenuItem
 
     private val viewModel: WebviewViewModel by viewModels()
+
+    private var bookmarkStatus = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +77,7 @@ class WebviewActivity : AppCompatActivity() {
 
         viewModel.getBookmarkStatus(articlesItem.title)
         viewModel.bookmarkStatus.observe(this, { status ->
+            bookmarkStatus = status
             if (status) {
                 bookmarkIcon.icon =
                     ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black_fill)
@@ -88,18 +92,15 @@ class WebviewActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.refresh -> binding.webView.loadUrl(newsUrl)
             R.id.bookmark -> {
-                viewModel.getBookmarkStatus(articlesItem.title)
-                viewModel.bookmarkStatus.observe(this, { status ->
-                    if (status) {
-                        viewModel.deleteBookmark(articlesItem)
-                        bookmarkIcon.icon =
-                            ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black)
-                    } else {
-                        viewModel.addBookmark(articlesItem)
-                        bookmarkIcon.icon =
-                            ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black_fill)
-                    }
-                })
+                if (bookmarkStatus) {
+                    viewModel.deleteBookmark(articlesItem)
+                    bookmarkIcon.icon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black)
+                } else {
+                    viewModel.addBookmark(articlesItem)
+                    bookmarkIcon.icon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_bookmark_black_fill)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

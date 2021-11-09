@@ -14,8 +14,8 @@ interface BookmarkDao {
     suspend fun removeBookmark(bookmarkNewsEntity: BookmarkNewsEntity)
 
     @Query("SELECT * FROM bookmark")
-    suspend fun getBookmarkList(): List<BookmarkNewsEntity>
+    fun getBookmarkList(): LiveData<List<BookmarkNewsEntity>>
 
     @Query("SELECT EXISTS(SELECT * FROM bookmark WHERE title = :title)")
-    suspend fun checkIsNewsBookmarked(title: String): Boolean
+    fun checkIsNewsBookmarked(title: String): LiveData<Boolean>
 }

@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -32,6 +33,7 @@ object NetworkModule {
     fun provideGsonConverter(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
+    @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory

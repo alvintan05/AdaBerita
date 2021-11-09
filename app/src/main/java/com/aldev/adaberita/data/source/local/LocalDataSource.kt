@@ -8,19 +8,14 @@ import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val bookmarkDao: BookmarkDao) {
 
-    suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>> {
-        val data = bookmarkDao.getBookmarkList()
-        return if (data.isNotEmpty()) {
-            Resource.Success(data)
-        } else {
-            Resource.Empty()
-        }
+    fun getBookmarkList(): LiveData<List<BookmarkNewsEntity>> {
+        return bookmarkDao.getBookmarkList()
     }
 
     suspend fun addBookmark(entity: BookmarkNewsEntity) = bookmarkDao.addBookmark(entity)
 
     suspend fun removeBookmark(entity: BookmarkNewsEntity) = bookmarkDao.removeBookmark(entity)
 
-    suspend fun checkIsNewsBookmarked(title: String): Boolean =
+    fun checkIsNewsBookmarked(title: String): LiveData<Boolean> =
         bookmarkDao.checkIsNewsBookmarked(title)
 }

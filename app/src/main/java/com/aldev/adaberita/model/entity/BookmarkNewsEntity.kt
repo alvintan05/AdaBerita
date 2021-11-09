@@ -1,10 +1,13 @@
 package com.aldev.adaberita.model.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "bookmark")
+@Parcelize
 data class BookmarkNewsEntity(
     @PrimaryKey
     val title: String,
@@ -20,4 +23,4 @@ data class BookmarkNewsEntity(
     val sourceId: String? = null,
     val url: String? = null,
     val content: String? = null
-)
+) : Parcelable

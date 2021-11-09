@@ -14,13 +14,13 @@ class NewsRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : NewsDataSource {
 
-    override suspend fun getHeadlineNews(): LiveData<PagingData<ArticlesItem>> =
+    override suspend fun getHeadlineNews(): LiveData<PagingData<BookmarkNewsEntity>> =
         remoteDataSource.getHeadlineNews()
 
-    override suspend fun getHeadlineNewsFromCategory(categoryId: String): LiveData<PagingData<ArticlesItem>> =
+    override suspend fun getHeadlineNewsFromCategory(categoryId: String): LiveData<PagingData<BookmarkNewsEntity>> =
         remoteDataSource.getHeadlineNewsFromCategory(categoryId)
 
-    override suspend fun getBookmarkList(): Resource<List<BookmarkNewsEntity>> =
+    override fun getBookmarkList(): LiveData<List<BookmarkNewsEntity>> =
         localDataSource.getBookmarkList()
 
     override suspend fun addBookmark(entity: BookmarkNewsEntity) {
@@ -31,7 +31,7 @@ class NewsRepository @Inject constructor(
         localDataSource.removeBookmark(entity)
     }
 
-    override suspend fun checkIsNewsBookmarked(title: String): Boolean =
+    override fun checkIsNewsBookmarked(title: String): LiveData<Boolean> =
         localDataSource.checkIsNewsBookmarked(title)
 
 }

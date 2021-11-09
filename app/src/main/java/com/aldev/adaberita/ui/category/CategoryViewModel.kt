@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.aldev.adaberita.data.NewsRepository
+import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(private val newsRepository: NewsRepository) :
     ViewModel() {
 
-    var data: LiveData<PagingData<ArticlesItem>> = MutableLiveData()
+    var data: LiveData<PagingData<BookmarkNewsEntity>> = MutableLiveData()
 
 //    private val _data: MutableLiveData<PagingData<ArticlesItem>> by lazy {
 //        MutableLiveData<PagingData<ArticlesItem>>()

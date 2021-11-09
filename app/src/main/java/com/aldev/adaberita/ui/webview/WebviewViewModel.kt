@@ -14,30 +14,24 @@ import javax.inject.Inject
 @HiltViewModel
 class WebviewViewModel @Inject constructor(private val repository: NewsRepository) : ViewModel() {
 
-    val bookmarkStatus: LiveData<Boolean> get() = _bookmarkStatus
-
-    private val _bookmarkStatus: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
+    lateinit var bookmarkStatus: LiveData<Boolean>
 
     fun getBookmarkStatus(title: String) {
         viewModelScope.launch {
             val result = repository.checkIsNewsBookmarked(title)
-            _bookmarkStatus.value = result
+            bookmarkStatus = result
         }
     }
 
-    fun addBookmark(articlesItem: ArticlesItem) {
-        val entity = mapperItem(articlesItem)
+    fun addBookmark(item: BookmarkNewsEntity) {
         viewModelScope.launch {
-            repository.addBookmark(entity)
+            repository.addBookmark(item)
         }
     }
 
-    fun deleteBookmark(articlesItem: ArticlesItem) {
-        val entity = mapperItem(articlesItem)
+    fun deleteBookmark(item: BookmarkNewsEntity) {
         viewModelScope.launch {
-            repository.removeBookmark(entity)
+            repository.removeBookmark(item)
         }
     }
 
