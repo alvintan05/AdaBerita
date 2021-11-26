@@ -1,95 +1,62 @@
 package com.aldev.adaberita.adapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.aldev.adaberita.R
+import com.aldev.adaberita.base.BaseRecyclerViewAdapter
+import com.aldev.adaberita.databinding.ItemListNewsBinding
 import com.aldev.adaberita.model.entity.BookmarkNewsEntity
 import com.aldev.adaberita.model.response.ArticlesItem
-import com.aldev.adaberita.databinding.ItemListNewsBinding
-import com.bumptech.glide.Glide
 
-class NewsRecyclerViewAdapter : RecyclerView.Adapter<NewsRecyclerViewAdapter.NewsViewHolder>() {
+class NewsRecyclerViewAdapter : BaseRecyclerViewAdapter<BookmarkNewsEntity, ItemListNewsBinding>() {
 
-    private var newsList = listOf<ArticlesItem>()
-    private var bookmarkList = arrayListOf<BookmarkNewsEntity>()
-    private lateinit var listener: OnItemClickListener
-    private var isBookmarked = false
+//    private var newsList = listOf<ArticlesItem>()
+//    private var bookmarkList = arrayListOf<BookmarkNewsEntity>()
 
-    fun setList(list: List<ArticlesItem>) {
-        newsList = list
-        notifyDataSetChanged()
-    }
+    //private lateinit var listener: OnItemClickListener
 
-    fun setBookmarkList(list: List<BookmarkNewsEntity>) {
-        bookmarkList.clear()
-        bookmarkList.addAll(list)
-        notifyDataSetChanged()
-    }
+//    fun setBookmarkList(list: List<BookmarkNewsEntity>) {
+//        bookmarkList.clear()
+//        bookmarkList.addAll(list)
+//        notifyDataSetChanged()
+//    }
 
-    fun setBookmarkStatus(status: Boolean) {
-        isBookmarked = status
-    }
+//    fun setOnClickListener(listener: OnItemClickListener) {
+//        this.listener = listener
+//    }
+//
+//    interface OnItemClickListener {
+//        fun onClick(item: BookmarkNewsEntity)
+//    }
 
-    fun setOnClickListener(listener: OnItemClickListener) {
-        this.listener = listener
-    }
+    override fun getLayoutResourceId(): Int = R.layout.item_list_news
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder =
-        NewsViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context),
-                R.layout.item_list_news,
-                parent,
-                false
-            )
-        )
-
-    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val item = bookmarkList[position]
-        holder.binding.news = item
+    override fun onBindViewHolder(
+        holder: Companion.BaseViewHolder<ItemListNewsBinding>,
+        position: Int
+    ) {
+        holder.binding.news = items[position]
         holder.binding.root.setOnClickListener {
-            listener.onClick(item)
+            listener?.invoke(it, items[position], position)
         }
     }
 
-    override fun getItemCount(): Int = bookmarkList.size
+//    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+//        val item = bookmarkList[position]
+//        holder.binding.news = item
+//        holder.binding.root.setOnClickListener {
+//            listener.onClick(item)
+//        }
+//    }
 
-    inner class NewsViewHolder(val binding: ItemListNewsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
 
-        fun bindItem(item: BookmarkNewsEntity) {
-            Glide.with(binding.root)
-                .load(item.urlToImage)
-                .into(binding.ivNews)
-
-            binding.tvNewsTitle.text = item.title
-            binding.tvNewsSource.text = item.sourceName
-
-//            binding.root.setOnClickListener { view ->
-//                if (isBookmarked) {
-//                    listener.onClickFromBookmarks(
-//                        BookmarkNewsEntity(
-//                            publishedAt = item.publishedAt,
-//                            author = item.author,
-//                            urlToImage = item.urlToImage,
-//                            description = item.description,
-//                            sourceName = item.source?.name,
-//                            sourceId = item.source?.id,
-//                            title = item.title,
-//                            url = item.url,
-//                            content = item.content
-//                        )
-//                    )
-//                } else {
-//                    listener.onClick(item)
-//                }
-//            }
-        }
-    }
-
-    interface OnItemClickListener {
-        fun onClick(item: BookmarkNewsEntity)
-    }
+//    inner class NewsViewHolder(val binding: ItemListNewsBinding) :
+//        RecyclerView.ViewHolder(binding.root) {
+//        fun bindItem(item: BookmarkNewsEntity) {
+//            Glide.with(binding.root)
+//                .load(item.urlToImage)
+//                .into(binding.ivNews)
+//
+//            binding.tvNewsTitle.text = item.title
+//            binding.tvNewsSource.text = item.sourceName
+//        }
+//    }
 }

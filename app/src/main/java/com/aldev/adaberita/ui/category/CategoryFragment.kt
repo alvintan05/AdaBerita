@@ -2,44 +2,31 @@ package com.aldev.adaberita.ui.category
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.aldev.adaberita.base.BaseFragment
 import com.aldev.adaberita.R
 import com.aldev.adaberita.adapter.NewsPagingAdapter
 import com.aldev.adaberita.databinding.FragmentCategoryBinding
 import com.aldev.adaberita.model.entity.BookmarkNewsEntity
-import com.aldev.adaberita.model.response.ArticlesItem
 import com.aldev.adaberita.ui.webview.WebviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CategoryFragment : Fragment(), AdapterView.OnItemSelectedListener {
-
-    private var _binding: FragmentCategoryBinding? = null
-    private val binding get() = _binding!!
+class CategoryFragment : BaseFragment<FragmentCategoryBinding>(), AdapterView.OnItemSelectedListener {
 
     private lateinit var recyclerViewAdapter: NewsPagingAdapter
     private val viewModel: CategoryViewModel by viewModels()
     private var headlineId: String = " "
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
-        return binding.root
-    }
+    override fun getFragmentView(): Int = R.layout.fragment_category
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
