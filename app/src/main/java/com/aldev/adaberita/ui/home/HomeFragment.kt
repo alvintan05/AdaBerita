@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         lifecycleScope.launch {
             recyclerViewAdapter.loadStateFlow.collectLatest {
                 binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
-                binding.rvHome.isVisible = it.refresh !is LoadState.Error
+//                binding.rvHome.isVisible = it.refresh !is LoadState.Error
                 binding.ivWarning.isVisible = it.refresh is LoadState.Error
             }
         }
